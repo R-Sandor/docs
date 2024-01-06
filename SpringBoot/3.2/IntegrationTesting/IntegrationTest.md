@@ -44,7 +44,7 @@ import static org.junit.jupiter.*;
 
 ### PAUSE POINT:
 
-JUnit has been around for a very long time and it's way to easy with VSCode to import the old packages. 
+JUnit has been around for a very long time and it's way too easy with VSCode to import the old packages. 
 
 ``` java
 // JUnit5 - juipiter
@@ -82,15 +82,15 @@ Follow: [Dan Vegas Github](https://github.com/danvega)
 
 ### PAUSE POINT:
 
-- He is Spring Developer Advocate at VMWare and his YouTube videos are phenomenal, it will save hours of configuring things that are handled in latter versions of Spring 
+- Dan Vegas: Spring Developer Advocate at VMWare and his YouTube videos are phenomenal, it will save hours of configuring things that are handled in latter versions of Spring 
 - [Back to checklist](#checklist)
 
 <br>
 
 # Setup
 ## Annotations
-- Create an annotation directory in /src/main/test/java/<package_paths>/annotations
-	- Mine is src/test/java/dev/findfirst/core/annotations/
+- Create an annotation directory in `/src/main/test/java/<package_paths>/annotations`
+	- This code's test path is: `src/test/java/dev/findfirst/core/annotations/`
 - Create /src/test/java/<package_paths>/annotations/IntegrationTestConfig.java
    IntegrationTestConfig.java
 ``` java
@@ -117,7 +117,7 @@ This annotation does exactly that. To enable classes that have the `@Integration
 ---
 
 ## build.gradle for testing 
-Note I have the [jacoco plugin](https://docs.gradle.org/current/userguide/jacoco_plugin.html)  for creating code coverage
+Note the [jacoco plugin](https://docs.gradle.org/current/userguide/jacoco_plugin.html) is used for creating code coverage
 ``` java
 test {
 	systemProperty 'spring.profiles.active', 'dev'
@@ -206,12 +206,12 @@ public class DatabaseTest {
 	- Run Test: `./gradlew test`
 - CONFIRM: 
 	- TestContainers did not run.
-	- If the did check imports, configuration, etc
+	- _**ELSE**:_ check imports, configuration, etc. TestContainer should not run with Annotation.
 - DO:  
 	- Change: build.gradle `systemProperty 'spring.profiles.active', 'dev'` to `	systemProperty 'spring.profiles.active', 'integration'`
 - CONFIRM: 
-	- Tests Ran
-	- TestContainers started 
+	- Tests Run.
+	- TestContainers started without errors.
 
 
 ### PAUSE POINT: 
@@ -224,7 +224,7 @@ being seeded by the SQL scripts. In the next section writing real controller tes
 Annotation Summary.
 - `@Testcontainers`: Spins up and down the container for test. 
 - `@DataJpaTest`: Specifies we only want to bring up the DataJpaBeans (database classes).
-	- This is why I need to make a MockBean some security contexts are still reference by the repository. 
+	- This is why MockBean is used as some security contexts are still reference by the repository. 
 - `@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)`: Don't use the default settings, let the @ServiceConnection handle the configuration.
 - `@ServiceConnection`: Establishes the connection parameters to the database container for the user.
 - `@Container`: Specifies container should be managed by Testcontainers.
@@ -273,7 +273,7 @@ public class BookmarkControllerTest {
 
 ### PAUSE POINT: 
 
-- `restTemplate.exchange` - executes your request for you. 
+- `restTemplate.exchange` - executes requests. 
 	- Param 1: URL
 	- Param 2: Body/Header 
 	- Param 3: Method
@@ -298,8 +298,8 @@ public class BookmarkControllerTest {
   }
 ```  
 - Explore the other restTemplateOptions: 
-	- `getForObject` - 
-	- `getForEntity` - 
+	- `getForObject`  
+	- `getForEntity`  
 
 #### Final Note on `@Transactional`
 Note that in Integration test a complete web server/client is started and thus the tests are not running on the same thread as the server and that prevents `@Rollback` to work as it would ordinarily. 
