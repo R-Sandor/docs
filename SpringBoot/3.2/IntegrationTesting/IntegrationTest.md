@@ -137,7 +137,7 @@ Gradle:
 
 ```groovy
 dependencies {
-	// ... Other dependencies.
+  // ... Other dependencies.
   testImplementation 'org.testcontainers:junit-jupiter'
   testImplementation 'org.testcontainers:postgresql'
   testImplementation 'org.testcontainers:postgresql'
