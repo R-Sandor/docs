@@ -89,9 +89,10 @@ Follow: [Dan Vegas Github](https://github.com/danvega)
 
 # Setup
 ## Annotations
+DO:
 - Create an annotation directory in `/src/main/test/java/<package_paths>/annotations`
 	- This code's test path is: `src/test/java/dev/findfirst/core/annotations/`
-- Create /src/test/java/<package_paths>/annotations/IntegrationTestConfig.java
+- Create `/src/test/java/<package_paths>/annotations/IntegrationTestConfig.java`
    IntegrationTestConfig.java
 ``` java
 // DO: ADD com.your.project;
@@ -137,9 +138,9 @@ Gradle:
 ```groovy
 dependencies {
 	// ... Other dependencies.
-    testImplementation 'org.testcontainers:junit-jupiter'
-    testImplementation 'org.testcontainers:postgresql'
-   	testImplementation 'org.testcontainers:postgresql'
+  testImplementation 'org.testcontainers:junit-jupiter'
+  testImplementation 'org.testcontainers:postgresql'
+  testImplementation 'org.testcontainers:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation "org.testcontainers:junit-jupiter:1.19.3"
 
