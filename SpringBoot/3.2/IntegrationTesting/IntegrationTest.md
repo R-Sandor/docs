@@ -1,15 +1,20 @@
 # Integration Testing with Spring Boot 3.2
-If you're like me you thought testing your application was a good idea but didn't know
-where to begin to actually test your app then you have come to the right place. In this
-guide we will walk through the complexities together. 
+_Integration Tests_, provides a way of insuring that the application functions with 
+rest endpoints, and database without mocking, catching unexpected behaviors. 
+Where does one begin to actually test the application? If this is the question then this is the 
+right place. In this guide the complexities will be simplified. 
 
 The guide in particular will be looking at using TestContainers to do the integration tests. 
-The advantages of using a TestContainer is that there is no need to stand up database to test, the integration tests spin up a container and can even populate it with a schema and data from files that one is likely using in development such as the schema.sql  & data.sql in /src/main/resources.
+The advantages of using a TestContainer is that there is no need to stand up database to test; 
+this is what the testcontainers perform. The integration tests spins up docker container(s) and 
+can even populate database in the same function as in development with a schema and data from 
+files that one is likely using in development such as the schema.sql  & data.sql in /src/main/
+resources.
 
-This guide is in the form of  a DO-CONFIRM Checklist.
-Do/acknowledge each step, then confirming the results and ideas.
+<br/>
 
-<br>
+_**This guide is intended to be read in the form of a DO-CONFIRM Checklist.
+DO/ACK each step, CONFIRM the results/ideas.**_
 
 ----
 # Checklist: 
@@ -37,7 +42,8 @@ Writing tests is not something most engineers enjoy doing, and its even more fru
 import static org.junit.jupiter.*;
 ```
 
-PAUSE POINT: 
+### PAUSE POINT:
+
 JUnit has been around for a very long time and it's way to easy with VSCode to import the old packages. 
 
 ``` java
@@ -47,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.Assert.assertEquals;
 ```
 
-_Example_:
+#### _Example_:
 ![imports](assets/imports.png)
 
 ---
@@ -60,7 +66,8 @@ Visit:
 - [Spring 3.2 Docs](https://docs.spring.io/spring-boot/docs/3.2.0-M2/reference/html/features.html#features.testing)
 - [EnabledIf](https://docs.spring.io/spring-framework/reference/testing/annotations/integration-junit-jupiter.html) - Used for enabling tests only on a given profile.
 
-PAUSE POINT: 
+### PAUSE POINT: 
+
 The Spring API docs are confusing but they at least let one know where to begin searching. Recommend one always to search for `Spring Boot <Version> release docs` and these are 
 usually the are much better than the general Spring Framework page. 
 
@@ -73,8 +80,9 @@ Follow: [Dan Vegas Github](https://github.com/danvega)
 ### Video reference: 
 [Integration Testing with Dan Vegas Spring 3.2](https://www.youtube.com/watch?v=erp-7MCK5BU)
 
-PAUSE POINT:
-He is Spring Developer Advocate at VMWare and his YouTube videos are phenomenal, it will save hours of configuring things that are handled in latter versions of Spring 
+### PAUSE POINT:
+
+- He is Spring Developer Advocate at VMWare and his YouTube videos are phenomenal, it will save hours of configuring things that are handled in latter versions of Spring 
 - [Back to checklist](#checklist)
 
 <br>
@@ -99,7 +107,8 @@ import org.springframework.test.context.junit.jupiter.EnabledIf;
 public @interface IntegrationTest {}
 ```
 
-PAUSE POINT: 
+### PAUSE POINT: 
+
 One thing that makes testing easier is being able to only run these integration tests when required. 
 This annotation does exactly that. To enable classes that have the `@IntegrationTestConfig` at the top set the Spring Profile to integration. 
 
@@ -137,7 +146,8 @@ dependencies {
 }
 ```
 
-PAUSE POINT: 
+### PAUSE POINT: 
+
 - CONFIRM: IDE has rebuilt.
 
 ## TestContainers In Action
@@ -204,7 +214,7 @@ public class DatabaseTest {
 	- TestContainers started 
 
 
-PAUSE POINT: 
+### PAUSE POINT: 
 
 TestContainers support many databses, in this example PostgreSQL is being used. Refer to docs for other databases: [TestContainers](https://testcontainers.com/guides/testing-spring-boot-rest-api-using-testcontainers/) 
 
@@ -212,14 +222,14 @@ The database test was a way to ensure that the database container was working an
 being seeded by the SQL scripts. In the next section writing real controller tests will be covered. 
 
 Annotation Summary.
-- @Testcontainers: Spins up and down the container for test. 
-- @DataJpaTest: Specifies we only want to bring up the DataJpaBeans (database classes).
+- `@Testcontainers`: Spins up and down the container for test. 
+- `@DataJpaTest`: Specifies we only want to bring up the DataJpaBeans (database classes).
 	- This is why I need to make a MockBean some security contexts are still reference by the repository. 
-- @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE): Don't use the default settings, let the @ServiceConnection handle the configuration.
-- @ServiceConnection: Establishes the connection parameters to the database container for the user.
-- @Container: Specifies container should be managed by Testcontainers.
-- @Autowired: Inject a real bean. 
-- @Test: JUnit5 Test.
+- `@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)`: Don't use the default settings, let the @ServiceConnection handle the configuration.
+- `@ServiceConnection`: Establishes the connection parameters to the database container for the user.
+- `@Container`: Specifies container should be managed by Testcontainers.
+- `@Autowired`: Inject a real bean. 
+- `@Test`: JUnit5 Test.
 
 NOTE: VSCode Testing extension requires a profile to be added: to settings.json 
 ``` json
@@ -261,7 +271,7 @@ public class BookmarkControllerTest {
 
 ```
 
-PAUSE POINT: 
+### PAUSE POINT: 
 
 - `restTemplate.exchange` - executes your request for you. 
 	- Param 1: URL
@@ -291,7 +301,7 @@ PAUSE POINT:
 	- `getForObject` - 
 	- `getForEntity` - 
 
-### Final Note on `@Transactional`
+#### Final Note on `@Transactional`
 Note that in Integration test a complete web server/client is started and thus the tests are not running on the same thread as the server and that prevents `@Rollback` to work as it would ordinarily. 
 
 - [Back to checklist](#checklist)
